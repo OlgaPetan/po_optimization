@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 
 # --- Load and process data ---
-@st.cache
+@st.cache_data
 
 def load_data(path, target_wos):
     df = pd.read_csv(path, delimiter=";")
