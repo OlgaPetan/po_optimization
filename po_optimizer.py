@@ -27,15 +27,15 @@ def validate_po(po_df):
     issues = []
     total_units = po_df["Suggested Replan Qty"].sum()
     if total_units < 5000:
-        issues.append(f"⚠️ Total PO units below minimum: {total_units} < 5000")
+        issues.append(f"⚠Total PO units below minimum: {total_units} < 5000")
 
     for color, group in po_df.groupby("Color"):
         if group["Suggested Replan Qty"].sum() < 1000:
-            issues.append(f"⚠️ Color '{color}' has less than 1,000 units")
+            issues.append(f"⚠Color '{color}' has less than 1,000 units")
 
     for _, row in po_df.iterrows():
         if row["Suggested Replan Qty"] < 25:
-            issues.append(f"⚠️ SKU {row['SKU']} has less than 25 units")
+            issues.append(f"⚠SKU {row['SKU']} has less than 25 units")
     return issues
 
 # Suggest PO based on rules 
@@ -74,7 +74,7 @@ def suggest_po(df):
     return po_df
 
 # --- App ---
-st.title("🧠 Honeylove PO Optimizer (Local Data)")
+st.title("Honeylove PO Optimizer")
 target_wos = st.slider("Target Weeks of Supply (WOS)", 8, 20, 15)
 
 # Automatically load local CSV
@@ -87,7 +87,7 @@ if st.button("Suggest Optimal PO"):
     st.dataframe(po_df[["SKU", "Color", "Size", "Velocity Tier", "WOS", "Suggested Replan Qty", "Reason"]])
 
     # Validation
-    st.subheader("✅ PO Validation")
+    st.subheader("PO Validation")
     issues = validate_po(po_df)
     if issues:
         for issue in issues:
@@ -102,7 +102,7 @@ if st.button("Suggest Optimal PO"):
 
     # Download
     st.download_button(
-        "📥 Download PO CSV",
+        "Download PO CSV",
         data=po_df[["SKU", "Color", "Size", "Suggested Replan Qty", "Reason"]].to_csv(index=False),
         file_name="optimized_po.csv",
         mime="text/csv"
