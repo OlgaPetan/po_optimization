@@ -27,15 +27,15 @@ def validate_po(po_df):
     issues = []
     total_units = po_df["Suggested Replan Qty"].sum()
     if total_units < 5000:
-        issues.append(f"⚠Total PO units below minimum: {total_units} < 5000")
+        issues.append(f"Total PO units below minimum: {total_units} < 5000")
 
     for color, group in po_df.groupby("Color"):
         if group["Suggested Replan Qty"].sum() < 1000:
-            issues.append(f"⚠Color '{color}' has less than 1,000 units")
+            issues.append(f"Color '{color}' has less than 1,000 units")
 
     for _, row in po_df.iterrows():
         if row["Suggested Replan Qty"] < 25:
-            issues.append(f"⚠SKU {row['SKU']} has less than 25 units")
+            issues.append(f"SKU {row['SKU']} has less than 25 units")
     return issues
 
 # Suggest PO based on rules 
